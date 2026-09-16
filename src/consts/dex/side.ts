@@ -1,19 +1,7 @@
 import { type CalcdexBattleField, type CalcdexPlayerSide } from '@showdex/interfaces/calc';
 
-/**
- * Keys of field-wide conditions in `CalcdexBattleField` that are rendered alongside the player-sided toggles.
- *
- * * Typically only used by `FieldCalc`, which shows these toggles on both sides & updates the `field` when pressed.
- *
- * @since 1.4.3
- */
 export type CalcdexFieldToggleKey = keyof Pick<CalcdexBattleField, 'isGravity' | 'isMudSport' | 'isWaterSport'>;
 
-/**
- * Field-wide condition keys, in the order they should appear in `FieldCalc`.
- *
- * @since 1.4.3
- */
 export const CalcdexFieldToggleKeys: CalcdexFieldToggleKey[] = [
   'isGravity',
   'isMudSport',

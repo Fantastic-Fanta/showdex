@@ -25597,10 +25597,10 @@ index c8fda2f2b3a67916842314a4c3d1e12171c898d6..58e2d05ee56992d5ed11565e47d92da4
 \ No newline at end of file
 diff --git a/dist/showdex.d.ts b/dist/showdex.d.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..7865286e9760b4f8550b556391f53885632411cb
+index 0000000000000000000000000000000000000000..22b8c88e223f24ea6ab969638c92e9518a9c3630
 --- /dev/null
 +++ b/dist/showdex.d.ts
-@@ -0,0 +1,112 @@
+@@ -0,0 +1,101 @@
 +/**
 + * @file `showdex.ts` - Anything used to implement `@smogon/calc` mods for Showdex.
 + * @author Keith Choison <keith@tize.io>
@@ -25685,19 +25685,8 @@ index 0000000000000000000000000000000000000000..7865286e9760b4f8550b556391f53885
 +     * @since 1.3.0
 +     */
 +    excludeEotDamage?: boolean;
-+    /**
-+     * Whether *Mud Sport* is active, weakening Electric-type moves.
-+     *
-+     * * Applied as a base power modifier in each mechanics file (gens 3+), after the move's type has been determined.
-+     *
-+     * @since 1.4.3
-+     */
++    /** Applied as a BP mod once the move's final type is known (e.g., after Weather Ball or Galvanize). */
 +    isMudSport?: boolean;
-+    /**
-+     * Whether *Water Sport* is active, weakening Fire-type moves.
-+     *
-+     * @since 1.4.3
-+     */
 +    isWaterSport?: boolean;
 +}
 +/**
@@ -41857,10 +41846,10 @@ index 5dd545ec9df5e47bdf4af6251c14a15394a0d14d..f8491786f01b8da0d3ba7db39032f61c
  }
 diff --git a/src/showdex.ts b/src/showdex.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..fe4b22bb3319d964f2cafc70adce8699c19723da
+index 0000000000000000000000000000000000000000..10849e4dde1c47ce7c6b42382dc1e0e1015596bd
 --- /dev/null
 +++ b/src/showdex.ts
-@@ -0,0 +1,187 @@
+@@ -0,0 +1,174 @@
 +/**
 + * @file `showdex.ts` - Anything used to implement `@smogon/calc` mods for Showdex.
 + * @author Keith Choison <keith@tize.io>
@@ -41967,21 +41956,8 @@ index 0000000000000000000000000000000000000000..fe4b22bb3319d964f2cafc70adce8699
 +   * @since 1.3.0
 +   */
 +  excludeEotDamage?: boolean;
-+
-+  /**
-+   * Whether *Mud Sport* is active, weakening Electric-type moves.
-+   *
-+   * * Applied as a base power modifier in each mechanics file (gens 3+), after the move's type has been determined.
-+   *
-+   * @since 1.4.3
-+   */
++  /** Applied as a BP mod once the move's final type is known (e.g., after Weather Ball or Galvanize). */
 +  isMudSport?: boolean;
-+
-+  /**
-+   * Whether *Water Sport* is active, weakening Fire-type moves.
-+   *
-+   * @since 1.4.3
-+   */
 +  isWaterSport?: boolean;
 +}
 +
