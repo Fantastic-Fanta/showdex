@@ -1,4 +1,24 @@
-import { type CalcdexPlayerSide } from '@showdex/interfaces/calc';
+import { type CalcdexBattleField, type CalcdexPlayerSide } from '@showdex/interfaces/calc';
+
+/**
+ * Keys of field-wide conditions in `CalcdexBattleField` that are rendered alongside the player-sided toggles.
+ *
+ * * Typically only used by `FieldCalc`, which shows these toggles on both sides & updates the `field` when pressed.
+ *
+ * @since 1.4.3
+ */
+export type CalcdexFieldToggleKey = keyof Pick<CalcdexBattleField, 'isGravity' | 'isMudSport' | 'isWaterSport'>;
+
+/**
+ * Field-wide condition keys, in the order they should appear in `FieldCalc`.
+ *
+ * @since 1.4.3
+ */
+export const CalcdexFieldToggleKeys: CalcdexFieldToggleKey[] = [
+  'isGravity',
+  'isMudSport',
+  'isWaterSport',
+];
 
 /**
  * Toggle button mappings of player-sided screens.
@@ -45,7 +65,7 @@ export const PlayerSideConditionsToggleMap: Record<string, keyof CalcdexPlayerSi
  *
  * @since 1.0.3
  */
-export const PlayerSideConditionsDexMap: Partial<Record<keyof CalcdexPlayerSide | 'isGravity', [dict: 'abilities' | 'moves', id: string]>> = {
+export const PlayerSideConditionsDexMap: Partial<Record<keyof CalcdexPlayerSide | CalcdexFieldToggleKey, [dict: 'abilities' | 'moves', id: string]>> = {
   isLightScreen: ['moves', 'lightscreen'],
   isReflect: ['moves', 'reflect'],
   isAuroraVeil: ['moves', 'auroraveil'],
@@ -59,4 +79,6 @@ export const PlayerSideConditionsDexMap: Partial<Record<keyof CalcdexPlayerSide 
   isSR: ['moves', 'stealthrock'],
   spikes: ['moves', 'spikes'],
   isGravity: ['moves', 'gravity'],
+  isMudSport: ['moves', 'mudsport'],
+  isWaterSport: ['moves', 'watersport'],
 };

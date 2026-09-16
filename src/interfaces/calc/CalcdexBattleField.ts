@@ -74,6 +74,26 @@ export interface CalcdexBattleField extends Omit<SmogonState.Field, 'gameType'> 
   dirtyTerrain?: Terrain;
 
   /**
+   * Whether *Mud Sport* is in effect, weakening Electric-type moves.
+   *
+   * * Not natively supported by `@smogon/calc`, so this is applied as a BP modifier in `calcMoveBasePower()`.
+   * * In gens 3-5, this is a volatile on the Pokemon that used it (which is Baton Passable in gens 3 & 4),
+   *   but in gens 6+, this is a pseudo-weather that lasts 5 turns.
+   *
+   * @since 1.4.3
+   */
+  isMudSport?: boolean;
+
+  /**
+   * Whether *Water Sport* is in effect, weakening Fire-type moves.
+   *
+   * * Works exactly like `isMudSport`, but for Fire-type moves.
+   *
+   * @since 1.4.3
+   */
+  isWaterSport?: boolean;
+
+  /**
    * Field conditions on the attacking player's side.
    *
    * * Should be grabbed from the attacking `CalcdexPlayer`'s `side` and set to this value when instatiating the

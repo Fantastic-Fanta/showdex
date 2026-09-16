@@ -1,6 +1,6 @@
 import { type AbilityName, type GenerationNum, type MoveName } from '@smogon/calc';
 import { PokemonDenormalizedMoves, PokemonMoveSkinAbilities } from '@showdex/consts/dex';
-import { type CalcdexPokemon } from '@showdex/interfaces/calc';
+import { type CalcdexBattleField, type CalcdexPokemon } from '@showdex/interfaces/calc';
 import { clamp } from '@showdex/utils/core';
 import { detectGenFromFormat, detectLegacyGen, getDexForFormat } from '@showdex/utils/dex';
 import { calcHiddenPower } from './calcHiddenPower';
@@ -25,7 +25,7 @@ export const calcMoveBasePower = (
   moveName: MoveName,
   config?: {
     opponentPokemon?: CalcdexPokemon;
-    // field?: CalcdexBattleField;
+    field?: CalcdexBattleField;
     overrides?: SmogonMoveOverrides;
   },
 ): number => {
@@ -34,7 +34,7 @@ export const calcMoveBasePower = (
 
   const {
     opponentPokemon,
-    // field,
+    field,
     overrides,
   } = config || {};
 
@@ -244,6 +244,29 @@ export const calcMoveBasePower = (
 
   if (basePowerMods.length) {
     basePower = basePowerMods.reduce((bp, mod) => Math.floor(bp * clamp(0, mod)), basePower);
+  }
+
+  // Mud Sport & Water Sport aren't implemented in @smogon/calc, so we'll apply them here
+  // (note: Galvanize turns Normal moves into Electric ones before this check, while Normalize does the opposite)
+  const sportMoveType = (
+    (ability === 'Galvanize' as AbilityName && gen > 6 && moveType === 'Normal' && 'Electric')
+      || (
+        ability === 'Normalize' as AbilityName
+          && gen > 3
+          && !(gen > 6 && (hiddenPowerMove || PokemonDenormalizedMoves.includes(move)))
+          && 'Normal'
+      )
+  ) || moveType;
+
+  const sportActive = (field?.isMudSport && sportMoveType === 'Electric')
+    || (field?.isWaterSport && sportMoveType === 'Fire');
+
+  if (sportActive) {
+    // halved in gens 3 & 4, then reduced to 1352/4096 (~0.33x) in gens 5+ (verified from the Showdown server source code)
+    const sportMod = gen < 5 ? 2048 : 1352;
+
+    // same rounding as Showdown's modify(), which rounds half down
+    basePower = Math.max(Math.trunc((Math.trunc(basePower * sportMod) + 2047) / 4096), 1);
   }
 
   // update (2023/04/17): though @smogon/calc natively implements this now,

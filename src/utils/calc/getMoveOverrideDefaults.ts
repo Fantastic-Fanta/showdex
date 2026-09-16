@@ -109,7 +109,7 @@ export const getMoveOverrideDefaults = (
   // update (2024/09/25): letting @smogon/calc handle all these PokemonDynamicPowerMoves now
   // (also, existence of these props, even if nullish, is important for the `hasMoveOverrides()` to work properly!)
   output.basePower = !PokemonDynamicPowerMoves.includes(moveName)
-    ? calcMoveBasePower(format, pokemon, moveName, { opponentPokemon })
+    ? calcMoveBasePower(format, pokemon, moveName, { opponentPokemon, field })
     : null;
 
   output.alwaysCriticalHits = alwaysCriticalHits(moveName, format);
